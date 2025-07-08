@@ -1,10 +1,10 @@
-version: '3.8'
+
 
 services:
   rinha-backend:
     build: .
     ports:
-      - "8080:8080"
+      - "9999:8080"
     environment:
       - PORT=8080
       - PROCESSOR_DEFAULT_URL=http://processor-default:8080
@@ -25,7 +25,9 @@ services:
           memory: 256M
 
   processor-default:
-    image: bulletdev/rinha-de-backend-2025-payment-processor:latest
+    image: zanfranceschi/payment-processor:latest
+    ports:
+      - "8001:8080"
     environment:
       - PORT=8080
     deploy:
@@ -35,7 +37,9 @@ services:
           memory: 256M
 
   processor-fallback:
-    image: bulletdev/rinha-de-backend-2025-payment-processor:latest
+    image: zanfranceschi/payment-processor:latest
+    ports:
+      - "8002:8080"
     environment:
       - PORT=8080
     deploy:
