@@ -1,0 +1,17 @@
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+COPY build.gradle ./
+COPY gradle/ ./gradle/
+COPY gradlew ./
+COPY src/ ./src/
+
+RUN chmod +x ./gradlew && \
+    ./gradlew build -x test
+
+ENV JAVA_OPTS="-Xmx512m -Xms512m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+UseStringDeduplication -XX:+OptimizeStringConcat -Dnetty.allocator.type=pooled -Dnetty.allocator.maxOrder=9"
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "build/libs/rinha-backend-1.0.0.jar"]

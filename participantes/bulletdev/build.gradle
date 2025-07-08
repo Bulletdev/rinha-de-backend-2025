@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.rinha'
+version = '1.0.0'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.netty:netty-all:4.1.107.Final'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
+    implementation 'org.slf4j:slf4j-simple:2.0.12'
+
+    implementation 'org.asynchttpclient:async-http-client:2.12.3'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+}
+
+application {
+    mainClass = 'com.rinha.RinhaBackendApp'
+}
+
+applicationDefaultJvmArgs = [
+        '-Xmx512m',
+        '-Xms512m',
+        '-XX:+UseG1GC',
+        '-XX:MaxGCPauseMillis=100',
+        '-XX:+UseStringDeduplication',
+        '-XX:+OptimizeStringConcat',
+        '-Dnetty.allocator.type=pooled',
+        '-Dnetty.allocator.maxOrder=9'
+]

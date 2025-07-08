@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  rinha-backend:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - PROCESSOR_DEFAULT_URL=http://processor-default:8080
+      - PROCESSOR_FALLBACK_URL=http://processor-fallback:8080
+      - CONNECTION_TIMEOUT=5000
+      - REQUEST_TIMEOUT=10000
+      - MAX_CONNECTIONS=100
+    depends_on:
+      - processor-default
+      - processor-fallback
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+  processor-default:
+    image: bulletdev/rinha-de-backend-2025-payment-processor:latest
+    environment:
+      - PORT=8080
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  processor-fallback:
+    image: bulletdev/rinha-de-backend-2025-payment-processor:latest
+    environment:
+      - PORT=8080
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
